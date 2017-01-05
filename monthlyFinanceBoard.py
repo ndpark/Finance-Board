@@ -12,6 +12,7 @@ from openpyxl.utils import column_index_from_string
 
 
 #Couldn't think of the name - where the Created, Modified, Approved By columns are stored
+columnLocation=['Created Column Location','Modified Column Location','Approved Column Location']
 #The columns in numbers
 inNumbers=[1,2,3]
 #List for what rows the empty cells are located
@@ -53,6 +54,7 @@ def calculateManagerDifference():
 	
 	#Writing in the formula for manager calculation
 	for rowNum in range(2,sheet.max_row - counter):
+		managerSheet.cell(row=rowNum,column=calculatedManager).value= '='+columnLocation[2]+':'+columnLocation[2]+'-'+columnLocation[0]+':'+columnLocation[0]
 	
 	findAverage(managerSheet,type)
 def calculateFinanceDifference(): 
@@ -75,6 +77,7 @@ def calculateFinanceDifference():
 	
 	#Doing the actual calculation
 	for rowNum in range(2,sheet.max_row):
+		financeSheet.cell(row=rowNum,column=calculatedFinance).value= '='+columnLocation[1]+':'+columnLocation[1]+'-'+columnLocation[2]+':'+columnLocation[2]
 	
 	findAverage(financeSheet,type)
 def findColumnsAndEmptyRows(): 
@@ -83,10 +86,20 @@ def findColumnsAndEmptyRows():
 	for colNum in range(1,sheet.max_column+1):
 		search = str(sheet.cell(row=1,column=colNum).value)
 		if search == "Created":
+			columnLocation[0] = str(sheet.cell(row=1,column=colNum).column)
+			inNumbers[0] = column_index_from_string(columnLocation[0])
 		elif search == "Modified":
+			columnLocation[1] = str(sheet.cell(row=1,column=colNum).column)
+			inNumbers[1] = column_index_from_string(columnLocation[1])
 		elif search == "Approved By Date":
+			columnLocation[2] = str(sheet.cell(row=1,column=colNum).column)
+			inNumbers[2] = column_index_from_string(columnLocation[2])
 		elif search == "Approval Date":
+			columnLocation[2] = str(sheet.cell(row=1,column=colNum).column)
+			inNumbers[2] = column_index_from_string(columnLocation[2])
 		elif search == "Approved Date":
+			columnLocation[2] = str(sheet.cell(row=1,column=colNum).column)
+			inNumbers[2] = column_index_from_string(columnLocation[2])
 			
 	
 	#Find rows where Approved Date is blank
